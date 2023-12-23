@@ -30,6 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
     gameArena.innerHTML=' '; // if previously something is drawn remove it
     // Wipe out everything and redraw with the new coordinates when snakes moves;
 
+    snake.forEach((snakeCell)=>{
+        const element = drawDiv(snakeCell.x, snakeCell.y, 'snake');
+        gameArena.appendChild(element);
+    })
     const foodElement = drawDiv(food.x, food.y, 'food');
     gameArena.appendChild(foodElement);
   }
@@ -38,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(() => {
       drawScoreBoard();
       drawFoodAndSnake();
+    
     }, 1000);
   }
 
