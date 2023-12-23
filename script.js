@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }while(snake.some(snakeCell => snakeCell.x==newX && snakeCell.y==newY));
     food={x:newX, y: newY};
   }
+
   function updateSnake(){
     //1. Calculate new coordinate the snake head will go to
     const newHead = {x: snake[0].x + dx, y: snake[0].y + dy};
@@ -60,8 +61,32 @@ document.addEventListener("DOMContentLoaded", () => {
         snake.pop(); //remove the last cell
     }
   }
+
+  function isGameOver(){
+    //check snake body hit
+    for(i=1; i<snake.length; i++){
+        if(snake[0].x==snake[i].x && snake[0].y==snake[i].y) return true; //game over
+    }
+    
+    //check wall collision
+    const isHittingLeftWall = snake[0].x<0;
+    const isHittingTopWall = snake[0].y<0;
+    const isHittingRightWall = snake[0].x>=arenaSize;
+    const isHittingDownWall = snake[0].x>=arenaSize;
+
+    return isHittingLeftWall||isHittingTopWall||isHittingRightWall||isHittingDownWall; //game over
+  }
+
   function gameLoop() {
     setInterval(() => {
+        if(!gameStarted) return;
+      //check for game over
+      if(isGameOver()){
+        gameStarted=false;
+        alert(`Game Over, Score=${score}`);
+        window.location.reload();
+        return
+      }
       updateSnake();
       drawScoreBoard();
       drawFoodAndSnake();
